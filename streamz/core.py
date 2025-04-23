@@ -1507,6 +1507,11 @@ class zip(Stream):
     def update(self, x, who=None, metadata=None):
         self._retain_refs(metadata)
         L = self.buffers[who]  # get buffer for stream
+        if len(L) > 1:
+            for op in self.downstreams:
+                if isinstance(op, map):
+                    op_name = op.func
+                    print(f"[WARNING] {op_name} is leading to congestion. Buffer sizes: {[str(k) + ': ' + str(len(v)) for k, v in self.buffers.items()]}")
         L.append((x, metadata))
         if len(L) == 1 and all(self.buffers.values()):
             vals = [self.buffers[up][0] for up in self.upstreams]
