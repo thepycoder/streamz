@@ -359,6 +359,8 @@ class Stream(APIRegisterMixin):
             if at:
                 if not callable(at):
                     s = str(at)
+                elif (hasattr(at, '__self__') and hasattr(at.__self__, "name")):
+                    s = at.__self__.name
                 elif hasattr(at, '__name__'):
                     s = getattr(self, m).__name__
                 else:
