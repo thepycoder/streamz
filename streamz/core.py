@@ -587,7 +587,7 @@ class Stream(APIRegisterMixin):
 
         return self.scan(update_frequencies, start={}, **kwargs)
 
-    def visualize(self, filename='mystream.png', **kwargs):
+    def visualize(self, filename='mystream.png', simplified=False, **kwargs):
         """Render the computation of this object's task graph using graphviz.
 
         Requires ``graphviz`` and ``networkx`` to be installed.
@@ -596,11 +596,14 @@ class Stream(APIRegisterMixin):
         ----------
         filename : str, optional
             The name of the file to write to disk.
+        simplified : bool, optional
+            If True, only display Source, Sink, and map nodes in the visualization,
+            connecting them directly. Default False.
         kwargs:
             Graph attributes to pass to graphviz like ``rankdir="LR"``
         """
         from .graph import visualize
-        return visualize(self, filename, **kwargs)
+        return visualize(self, filename, simplified=simplified, **kwargs)
 
     def to_dataframe(self, example):
         """ Convert a stream of Pandas dataframes to a DataFrame
